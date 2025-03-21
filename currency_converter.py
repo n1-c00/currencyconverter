@@ -1,21 +1,23 @@
 import tkinter as tk
 from tkinter import ttk
+import requests
+
+url = "https://api.exchangerate-api.com/v4/latest/"
 
 
 class CurrencyConverter:
     def __init__(self, root):
-        self.conversions = {'USDtoEUR': 0,
-                            'USDtoYEN': 1,
-                            'USDtoUSD': 2,
-                            'EURtoUSD': 5,
-                            'EURtoYEN': 7,
-                            'EURtoEUR': 1,
-                            'YENtoUSD': 11,
-                            'YENtoEUR': 13,
-                            'YENtoYEN': 1
-                            }
+        self.conversions = {}
+        
+        self.Currencies = ["EUR", "USD", "JPY"]
 
-        self.Currencies = ["EUR", "USD", "YEN"]
+        # Initialize conversion rates dictionary using the API
+        for base_currency in self.Currencies:
+            response = requests.get(url + base_currency)
+            data = response.json()
+            rates = data.get('rates', {})
+            print(rates)
+
 
         #init for TKinter
         self.root = root
